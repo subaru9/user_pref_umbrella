@@ -1,0 +1,21 @@
+graph TD;
+    subgraph User Creation Process
+        X[GraphQL Mutation: createUser] -->|Absinthe Auth Middleware| Y{Authinticated?}
+        Y -- Yes --> V[User Input Processing]
+        Y -- No --> W[Return 401 Unauthorized]
+
+        V -->|Validate Input| U{UserPref.create_user/1}
+        U -- Valid Input --> T[Insert User in DB]
+        U -- Invalid Input --> S[Return Validation Errors]
+
+        T -->|Trigger Avatar Generation| R[Oban UserAvatarsWorker.enqueue/2]
+        R -->|Fetch Avatar from Giphy API| Q[GiphyApi.search/1]
+        R -->|Store Avatar Data| P[Insert Avatars in DB]
+
+        T -->|Return Created User| O[GraphQL Response]
+    end
+
+    subgraph Data Storage
+        M[Users Table DB] -.-> T
+        N[Avatars Table DB] -.-> P
+    end

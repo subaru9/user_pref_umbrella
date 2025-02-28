@@ -1,0 +1,41 @@
+graph TD;
+
+    subgraph Oban Instances
+        O0[BgJobs.Oban - Primary Node]
+        O1[UserPref.Oban - Failover Node]
+
+        O0 --> |Leader: True| O2[Processes Jobs If Available]
+        O1 --> |Leader: False| O3[Processes Jobs Only If Primary Fails]
+    end
+
+    subgraph Job Execution
+        P0[BgJobs.NodeStatus.Worker]
+        P1[UserPrefWeb.Resolvers.UserAvatarsWorker]
+
+        P0 --> |Runs on BgJobs.Oban| O0
+        P1 --> |Runs on UserPref.Oban| O1
+    end
+
+    subgraph BgJobs.NodeStatus.Worker
+        N0[Check Which Nodes Are Currently Connected]
+        N1[Emit Telemetry Metrics]
+
+        P0 --> N0
+        N0 --> N1
+    end
+
+    subgraph UserAvatarsWorker
+        U0[Fetch GIFs from Giphy API]
+        U1[Transform Data]
+        U2[Store Avatars in DB]
+
+        P1 --> U0
+        U0 --> U1
+        U1 --> U2
+    end
+
+    subgraph Data Storage
+        D1[Avatars Table]
+
+        U2 -.-> D1
+    end

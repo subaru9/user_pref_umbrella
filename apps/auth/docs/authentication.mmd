@@ -1,0 +1,39 @@
+graph TD;
+    
+    subgraph Authentication
+        
+        subgraph Incoming Request Flow
+            A((Incoming Request)) 
+            B{Has Authorization header with Bearer Token?} 
+            C[Proceed Without Auth] 
+            D[UserPrefWeb.Plugs.Auth - Assign token to Absinthe Context] 
+
+            A --> B
+            B -- No --> C
+            B -- Yes --> D
+        end
+
+        %% Connecting subgraphs (Incoming Request Flow -> Absinthe Middleware)
+        D --> H
+
+        subgraph Absinthe Middleware
+            H[UserPrefWeb.Schema] 
+            I{Apply Middleware} 
+            J[Middleware.Auth - Mutations Only - Apply Token Validation]
+
+            H --> I
+            I --> J
+        end
+
+        %% Connecting subgraphs (Absinthe Middleware -> Middleware.Auth)
+        J --> E
+
+        subgraph Middleware.Auth
+            E{Auth.Token.validate/2 - Validate JWT} 
+            F[Error Handling - Return 401 Unauthorized] 
+            G[UserPrefWeb.Schema.Middleware.Auth - Extract current_user_id and Put in Context]
+
+            E -- Invalid --> F
+            E -- Valid --> G
+        end
+    end

@@ -1,0 +1,56 @@
+graph TD;
+    
+    subgraph Producer
+        A0[Supervised Start] 
+        A[Initialisation] 
+        B[Initial production] 
+        C[Demand based production]
+
+        A0 --> |Under Auth's Supervisor| A
+        A --> |Schedule next run| B
+        B --> |Cursor based pagination, page size set by demand| C
+    end
+
+    %% Connecting subgraphs (Producer -> ConsumerSupervisor)
+    H0 --> C
+
+    subgraph ConsumerSupervisor
+        H0[Supervised Start] 
+        I[Initialisation]
+
+        subgraph Initialisation
+            I1[Child specs for Consumer]
+            I2[Set Producer subscription with min/max demand]
+        end
+        H0 --> I
+        I1 --> I2
+    end
+
+    %% ConsumerSupervisor sends demand signal to Producer
+    H0 -.-> |Demand Signal| C
+
+    %% Connecting subgraphs (ConsumerSupervisor -> Consumer)
+    I --> L
+
+    subgraph Consumer
+        L[Start linked task] 
+        M{Refresh token for a user}
+        N[Put token into cache]
+        O[Emit generation time]
+        P[Finish task]
+
+        L --> M
+        M -- Yes --> N
+        M -- No --> P
+        N --> O
+        O --> P
+    end
+
+    subgraph DB
+        B -.-> Y[Users Table]
+        C -.-> Y[Users Table]
+    end
+
+    subgraph ETS
+        N -.-> W[Tokens table]
+    end

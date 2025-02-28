@@ -1,0 +1,12 @@
+graph TD;
+  subgraph Serving User
+    A[GraphQL Query: user&#40;id&#41;] --> |RequestCache.Plug|B{Cached?}
+    B -- Yes --> C[GraphQL Response]
+    B -- No --> D[GraphQL Resolver UserPrefWeb.Resolvers.UserPref]
+    D --> |Fetch from DB| E[GraphQL response]
+
+  end
+  subgraph Data Storage
+    M[Users Table DB] -.-> D
+  end
+
