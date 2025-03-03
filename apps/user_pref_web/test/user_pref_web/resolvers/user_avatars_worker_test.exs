@@ -2,7 +2,6 @@ defmodule UserPref.Workers.UserAvatarsWorkerTest do
   use UserPref.DataCase
 
   alias UserPrefWeb.Resolvers.UserAvatarsWorker
-  alias GiphyApi.Support.TestHelpers
 
   @attempted_by ["user_pref@localhost"]
 
@@ -42,7 +41,7 @@ defmodule UserPref.Workers.UserAvatarsWorkerTest do
 
     test "enqueue duplicate jobs with conflict", %{user_id: user_id, first_name: first_name} do
       Oban.Testing.with_testing_mode(:manual, fn ->
-        {:ok, job1} = UserAvatarsWorker.enqueue(user_id, first_name)
+        {:ok, _job1} = UserAvatarsWorker.enqueue(user_id, first_name)
 
         assert {:ok,
                 %Oban.Job{

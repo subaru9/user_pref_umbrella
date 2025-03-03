@@ -1,18 +1,26 @@
 defmodule Auth do
   @moduledoc """
-  Documentation for `Auth`.
+  Behaviour for authentication.
   """
+  @type auth_token :: String.t() | nil
+  @type user_id :: non_neg_integer
+  @type res :: {:ok, user_id} | {:error, ErrorMessage.t()}
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Auth.hello()
-      :world
-
+  Verify credentials and store current user id in a context
   """
-  def hello do
-    :world
+  @callback authenticate(auth_token) :: res
+
+  alias Auth.{Config, Token}
+
+  @behaviour Auth
+
+  @impl Auth
+  @spec authenticate(auth_token()) :: res
+  def authenticate(auth_token) do
+    with secret <- Config.fetch_secret(),
+         {:ok, %{"sub" => user_id}} <- Token.validate(auth_token, secret) do
+      {:ok, user_id}
+    end
   end
 end

@@ -174,8 +174,6 @@ defmodule UserPrefWeb.Schema.Query.UserPrefTest do
 
   describe "@user" do
     test "get a user by id", %{conn: conn} do
-      user_id = 4
-
       conn =
         post(
           conn,

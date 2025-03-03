@@ -11,6 +11,10 @@ defmodule Auth.Token.JWT do
     "#{encoded_header}.#{encoded_payload}.#{signature}"
   end
 
+  def validate(token, _secret) when is_nil(token) do
+    {:error, Error.unauthorized("[Auth.Token.JWT] Token is missing")}
+  end
+
   def validate(token, secret) do
     with [header_b64, payload_b64, signature_b64] <- String.split(token, "."),
          recreated_signature <- create_signature(header_b64, payload_b64, secret),
@@ -21,10 +25,11 @@ defmodule Auth.Token.JWT do
       {:ok, valid_payload}
     else
       %ErrorMessage{} = error ->
-        error
+        {:error, error}
 
       _ ->
-        Error.unauthorized("[Auth.Token.JWT] Invalid token or signature verification failed")
+        {:error,
+         Error.unauthorized("[Auth.Token.JWT] Invalid token or signature verification failed")}
     end
   end
 
