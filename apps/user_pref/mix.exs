@@ -36,13 +36,14 @@ defmodule UserPref.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bg_jobs, in_umbrella: true},
       {:dataloader, "~> 1.0.0"},
       {:dns_cluster, "~> 0.1.1"},
       {:ecto_shorts,
        git: "https://github.com/subaru9/ecto_shorts.git",
        branch: "feat/query-builder-in-context",
        override: true},
-      {:ecto_sql, "~> 3.10"},
+      {:ecto_sql, "~> 3.0"},
       {:error_message,
        git: "https://github.com/subaru9/elixir_error_message.git",
        branch: "feat/json-serialisable-functions",

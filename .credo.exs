@@ -17,7 +17,8 @@ allowed_imports = [
 
 repo_modules =
   [
-    [:UserPref, :Repo]
+    [UserPref, Repo],
+    [BgJobs, Repo]
   ]
 
 %{

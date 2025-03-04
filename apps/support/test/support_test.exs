@@ -3,6 +3,6 @@ defmodule SupportTest do
   doctest Support
 
   test "greets the world" do
-    assert Support.hello() == :world
+    assert Support.hello() === :world
   end
 end

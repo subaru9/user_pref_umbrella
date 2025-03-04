@@ -12,7 +12,8 @@ defmodule GiphyApi.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -37,6 +38,12 @@ defmodule GiphyApi.MixProject do
       {:prometheus_telemetry, "~> 0.4"},
       {:sandbox_registry, "~> 0.1"},
       {:shared_utils, in_umbrella: true}
+    ]
+  end
+
+  defp aliases do
+    [
+      setup: ["deps.get"]
     ]
   end
 end

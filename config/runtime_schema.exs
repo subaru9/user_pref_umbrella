@@ -82,6 +82,23 @@ defmodule Config.RuntimeSchema do
       default: "false",
       context: [env: [:prod]]
     },
+    "OBAN_DB_URL"=> %{
+      doc: "Oban db url: ecto://USER:PASS@HOST/DATABASE",
+      cast: Type.URL,
+      groups: [:oban_db],
+      required: [:oban_db],
+      aliases: ["OBAN_DATABASE_URL"],
+      context: [env: [:prod]]
+    },
+    "OBAN_DB_POOL_SIZE"=> %{
+      doc: "Number of open connnections to oban db",
+      cast: Type.Integer,
+      groups: [:oban_db],
+      required: [:oban_db],
+      aliases: ["OBAN_POOL_SIZE"],
+      context: [env: [:prod]],
+      default_lazy: fn _ -> "10" end
+    },
     "SECRET_KEY_BASE" => %{
       doc: "Used to sign/encrypt cookies and other secrets",
       cast: Type.String,

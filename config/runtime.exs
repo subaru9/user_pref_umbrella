@@ -3,7 +3,7 @@ import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0, con
 alias Confispex, as: Cfx
 
 # Load the runtime environment schema
-Code.require_file(Path.expand("../config/runtime_schema.exs", __DIR__))
+Code.compile_file(Path.expand("./runtime_schema.exs", __DIR__))
 
 # Initialize Confispex with the schema
 Cfx.init(%{
@@ -24,6 +24,12 @@ if config_env() === :prod do
     # ssl: true,
     url: Cfx.get("PRIMARY_DB_URL"),
     pool_size: Cfx.get("PRIMARY_DB_POOL_SIZE"),
+    socket_options: maybe_ipv6
+
+  config :bg_jobs, BgJobs.Repo,
+    # ssl: true,
+    url: Cfx.get("OBAN_DB_URL"),
+    pool_size: Cfx.get("OBAN_DB_POOL_SIZE"),
     socket_options: maybe_ipv6
 
   import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0]

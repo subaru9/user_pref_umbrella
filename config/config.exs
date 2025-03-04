@@ -12,6 +12,16 @@ import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0]
 # Configure Mix tasks and generators
 
 # Configure  sub-apps
+config :user_pref,
+  ecto_repos: [UserPref.Repo]
+
+config :user_pref_web,
+  ecto_repos: [UserPref.Repo],
+  generators: [context_app: :user_pref]
+
+config :bg_jobs,
+  ecto_repos: [BgJobs.Repo]
+
 config :auth, :tokens, %{
   cache_type: SharedUtils.Cachable.ETS,
   cache_name: :auth_token_cache,
@@ -33,13 +43,6 @@ config :user_pref_web, :resolver_hits, %{
   cache_name: {:global, UserPrefWeb.ResolverHits.Cache},
   counter_name: {:global, UserPrefWeb.ResolverHits.Counter}
 }
-
-config :user_pref,
-  ecto_repos: [UserPref.Repo]
-
-config :user_pref_web,
-  ecto_repos: [UserPref.Repo],
-  generators: [context_app: :user_pref]
 
 # Configures the endpoint
 config :user_pref_web, UserPrefWeb.Endpoint,
@@ -95,7 +98,7 @@ config :bg_jobs, Oban,
   peer: {Oban.Peers.Database, [leader?: true]},
   node: "bg_jobs@localhost",
   notifier: Oban.Notifiers.PG,
-  repo: UserPref.Repo,
+  repo: BgJobs.Repo,
   log: false,
   queues: [
     node_status: 1,
@@ -118,7 +121,7 @@ config :user_pref, Oban,
   peer: {Oban.Peers.Database, [leader?: false]},
   node: "user_pref@localhost",
   notifier: Oban.Notifiers.PG,
-  repo: UserPref.Repo,
+  repo: BgJobs.Repo,
   log: false,
   queues: [
     node_status: 1,
@@ -136,7 +139,7 @@ config :user_pref_web, Oban,
   peer: false,
   node: "user_pref_web@localhost",
   notifier: Oban.Notifiers.PG,
-  repo: UserPref.Repo,
+  repo: BgJobs.Repo,
   log: false
 
 # Configure esbuild (the version is required)

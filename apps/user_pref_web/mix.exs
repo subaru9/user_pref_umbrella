@@ -41,6 +41,7 @@ defmodule UserPrefWeb.MixProject do
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_plug, "~> 1.5"},
       {:bandit, "~> 1.5"},
+      {:bg_jobs, in_umbrella: true},
       {:esbuild, "~> 0.8", runtime: Mix.env() === :dev},
       {:giphy_api, in_umbrella: true},
       {:heroicons,

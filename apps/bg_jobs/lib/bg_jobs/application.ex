@@ -8,6 +8,9 @@ defmodule BgJobs.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      # Oban repo
+      BgJobs.Repo,
+
       # Cluster Supervisor
       {Cluster.Supervisor,
        [

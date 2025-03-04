@@ -13,7 +13,8 @@ defmodule SharedUtils.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -33,6 +34,12 @@ defmodule SharedUtils.MixProject do
        override: true},
       {:poolboy, "~> 1.5"},
       {:redix, "~> 1.5"}
+    ]
+  end
+
+  defp aliases do
+    [
+      setup: ["deps.get"]
     ]
   end
 end
