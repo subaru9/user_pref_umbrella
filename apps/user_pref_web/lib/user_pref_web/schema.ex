@@ -4,6 +4,7 @@ defmodule UserPrefWeb.Schema do
   """
   use Absinthe.Schema
 
+  alias UserPrefWeb.Config
   alias UserPrefWeb.Schema
   alias UserPrefWeb.Schema.Middleware
 
@@ -39,7 +40,7 @@ defmodule UserPrefWeb.Schema do
   defp apply(middleware, :request_cache, _field, object) do
     case object do
       %{identifier: :query} ->
-        test_ttl = if Mix.env() === :test, do: :timer.seconds(1), else: nil
+        test_ttl = if Config.current_env()  === :test, do: :timer.seconds(1), else: nil
         opts = if test_ttl, do: [ttl: test_ttl], else: []
         middleware ++ [{RequestCache.Middleware, opts}]
 

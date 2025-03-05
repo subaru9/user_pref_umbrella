@@ -28,13 +28,13 @@ defmodule UserPrefWeb.ResolverHits.Counter do
   @type opts :: [{:name, name()}, {:task_supervisor_name, name()}]
   @type state :: %{name: name(), task_supervisor_name: name()}
 
-  @spec start_link(opts()) :: {:ok, pid()} | {:error, any()}
+  @spec start_link(opts()) :: {:ok, pid()} | {:error, any()} | :ignore
   def start_link(opts \\ []) do
     name = Keyword.fetch!(opts, :name)
     task_supervisor_name = Keyword.fetch!(opts, :task_supervisor_name)
     state = %{name: name, task_supervisor_name: task_supervisor_name}
 
-    {:ok, _pid} = GenServer.start_link(__MODULE__, state, name: name)
+    GenServer.start_link(__MODULE__, state, name: name)
   end
 
   @impl true
@@ -57,7 +57,7 @@ defmodule UserPrefWeb.ResolverHits.Counter do
         {:increment, resolver_name},
         %{task_supervisor_name: task_supervisor_name} = state
       ) do
-    Task.Supervisor.async_nolink(task_supervisor_name, fn ->
+    _ = Task.Supervisor.async_nolink(task_supervisor_name, fn ->
       count = ResolverHits.get(resolver_name) + 1
       ResolverHits.put(resolver_name, count)
       {:task_callback, count}

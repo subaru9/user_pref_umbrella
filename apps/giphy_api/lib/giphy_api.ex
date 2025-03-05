@@ -33,7 +33,7 @@ defmodule GiphyApi do
   def search(query, total_count \\ 30, batch_size \\ 15) do
     url = "#{Config.base_url!()}/v1/gifs/search?"
 
-    if Mix.env() === :test do
+    if Config.current_env() === :test do
       query
       |> build_requests(url, total_count, batch_size)
       |> Enum.map(&HTTPSandbox.get_response(&1, [], []))
@@ -58,7 +58,7 @@ defmodule GiphyApi do
 
       full_url = url <> params
 
-      if Mix.env() === :test do
+      if Config.current_env() === :test do
         full_url
       else
         Finch.build(:get, full_url)
@@ -81,7 +81,7 @@ defmodule GiphyApi do
   end
 
   defp process_results(tasks_or_responses, query, url) do
-    if Mix.env() === :test do
+    if Config.current_env() === :test do
       {successes, errors} =
         Enum.split_with(tasks_or_responses, &match?({:ok, _}, &1))
 
@@ -130,7 +130,7 @@ defmodule GiphyApi do
   defp await_task(task, query, url) do
     case Task.yield(task, @request_timeout) do
       nil ->
-        Task.shutdown(task)
+        _ = Task.shutdown(task)
 
         {:error,
          ErrorMessage.request_timeout(

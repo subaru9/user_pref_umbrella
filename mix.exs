@@ -5,9 +5,19 @@ defmodule UserPref.Umbrella.MixProject do
     [
       apps_path: "apps",
       version: "0.1.0",
-      start_permanent: Mix.env() == :prod,
+      start_permanent: Mix.env() === :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      dialyzer: [
+        list_unused_filters: true,
+        flags: [
+          :no_opaque,
+          :unknown,
+          :unmatched_returns,
+          :extra_return,
+          :missing_return
+        ]
+      ]
     ]
   end
 
@@ -27,7 +37,8 @@ defmodule UserPref.Umbrella.MixProject do
     [
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:blitz_credo_checks, "~> 0.1", only: [:test, :dev], runtime: false},
-      {:confispex, "~> 1.1"}
+      {:confispex, "~> 1.1"},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 

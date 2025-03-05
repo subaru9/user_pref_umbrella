@@ -22,8 +22,10 @@ defmodule UserPrefWeb.Application do
       {Redix, name: :redis},
       {SharedUtils.Redis, UserPrefWeb.Config.request_cache_pool()},
 
-      # Singleton supervisor for resolver hits counter
-      {Singleton.Supervisor, name: UserPrefWeb.Singleton},
+      # DynamicSupervisor for singleton monitoring manager
+      {Singleton.Supervisor, name: UserPrefWeb.SingletonManagerSupervisor},
+
+      # HTTP endpoint
       UserPrefWeb.Endpoint,
 
       # Absinthe
@@ -48,41 +50,42 @@ defmodule UserPrefWeb.Application do
     opts = [strategy: :one_for_one, name: UserPrefWeb.Supervisor]
     {:ok, pid} = Supervisor.start_link(children, opts)
 
-    # The singleton processes are colocated with resolvers 
-    # to minimize in-node communication delays and simplify debugging and maintenance.
-    start_resolver_hits_counter_as_global_process()
-    start_resolver_hits_cache_as_global_process()
+    # Starts singleton monitoring manager on each node, 
+    # which monitors global singleton process ensures 
+    # only one instance is running and is restarted as needed
+    {:ok, _pid} = start_resolver_hits_counter_as_global_singleton()
+    {:ok, _pid} = start_resolver_hits_cache_as_global_singleton()
 
     {:ok, pid}
   end
 
-  defp start_resolver_hits_counter_as_global_process do
-    %{counter_name: {:global, local_name} = global_name} =
-      Application.fetch_env!(:user_pref_web, :resolver_hits)
-
-    {:ok, _pid} =
-      Singleton.start_child(
-        UserPrefWeb.Singleton,
-        UserPrefWeb.ResolverHits.Counter,
-        %{
-          name: global_name,
-          task_supervisor_name: {:global, UserPrefWeb.ResolverHits.TaskSupervisor}
-        },
-        local_name
-      )
+  defp start_resolver_hits_counter_as_global_singleton do
+    Singleton.start_child(
+      # Singleton manager supervisor name
+      UserPrefWeb.SingletonManagerSupervisor,
+      # Singleton process module
+      UserPrefWeb.ResolverHits.Counter,
+      # Args to be passed in on singleton process start
+      %{
+        name: UserPrefWeb.Config.resolver_hits_counter_global_name(),
+        task_supervisor_name: {:global, UserPrefWeb.ResolverHits.TaskSupervisor}
+      },
+      # Name of the sigleton process to be made global (wrapped in {:global, name})
+      UserPrefWeb.Config.resolver_hits_counter_local_name()
+    )
   end
 
-  defp start_resolver_hits_cache_as_global_process do
-    %{cache_name: {:global, local_name} = global_name, cache_type: cache_type} =
-      Application.fetch_env!(:user_pref_web, :resolver_hits)
-
-    {:ok, _pid} =
-      Singleton.start_child(
-        UserPrefWeb.Singleton,
-        cache_type,
-        [name: global_name],
-        local_name
-      )
+  defp start_resolver_hits_cache_as_global_singleton do
+    Singleton.start_child(
+      # Singleton manager supervisor name
+      UserPrefWeb.SingletonManagerSupervisor,
+      # Singleton process module
+      UserPrefWeb.Config.resolver_hits_cache_type(),
+      # Args to be passed in on singleton process start
+      [name: UserPrefWeb.Config.resolver_hits_cache_global_name()],
+      # Name of the sigleton process to be made global (wrapped in {:global, name})
+      UserPrefWeb.Config.resolver_hits_cache_local_name()
+    )
   end
 
   # Tell Phoenix to update the endpoint configuration

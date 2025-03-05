@@ -9,7 +9,7 @@ defmodule UserPrefWeb.Resolvers.UserAvatarsWorker do
   @type oban_job :: %Oban.Job{args: map()}
   @type oban_changeset :: Ecto.Changeset.t()
   @type oban_result :: {:ok, Oban.Job.t()} | {:error, ErrorMessage.t()}
-  @type perform_result :: {:ok, map()} | {:error, ErrorMessage.t()}
+  @type perform_result :: {:ok, map()}| {:ok, [any(), ...], [any(), ...]} | {:error, ErrorMessage.t()}
 
   alias UserPref.Avatar
 

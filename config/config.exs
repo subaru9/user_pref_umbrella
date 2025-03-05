@@ -17,7 +17,8 @@ config :user_pref,
 
 config :user_pref_web,
   ecto_repos: [UserPref.Repo],
-  generators: [context_app: :user_pref]
+  generators: [context_app: :user_pref],
+  env: config_env()
 
 config :bg_jobs,
   ecto_repos: [BgJobs.Repo]
@@ -31,6 +32,7 @@ config :auth, :tokens, %{
 config :giphy_api,
   base_url: "https://api.giphy.com",
   search_limit: 20,
+  env: config_env(),
   pools: %{
     default: [
       protocols: [:http2],

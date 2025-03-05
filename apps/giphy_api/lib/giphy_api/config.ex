@@ -5,4 +5,5 @@ defmodule GiphyApi.Config do
   def search_limit!, do: Application.fetch_env!(@app, :search_limit)
   def base_url!, do: Application.fetch_env!(@app, :base_url)
   def pools!, do: Application.fetch_env!(@app, :pools)
+  def current_env, do: Application.fetch_env!(@app, :env)
 end

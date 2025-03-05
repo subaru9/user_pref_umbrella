@@ -8,7 +8,7 @@ defmodule UserPrefWeb.Resolvers.UserPref do
   @type user :: UserPref.User.t()
   @type pref :: UserPref.Pref.t()
   @type res :: Absinthe.Resolution.t()
-  @type error :: {:error, SharedUtils.Error.t()}
+  @type error :: {:error, ErrorMessage.t()}
   @type users :: list(user) | list()
 
   @spec users(map, res) :: {:ok, users}
@@ -45,6 +45,10 @@ defmodule UserPrefWeb.Resolvers.UserPref do
     UserPref.get_user(user_id)
   end
 
-  def get_current_user(_params, _resolution),
-    do: ErrorMessage.unauthorized("[UserPrefWeb.Resolvers.UserPref] Unauthorized. No current user found.")
+  def get_current_user(_params, _resolution) do
+    {:error,
+     ErrorMessage.unauthorized(
+       "[UserPrefWeb.Resolvers.UserPref] Unauthorized. No current user found."
+     )}
+  end
 end

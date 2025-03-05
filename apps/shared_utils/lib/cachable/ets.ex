@@ -9,9 +9,10 @@ defmodule SharedUtils.Cachable.ETS do
     name = Keyword.fetch!(opts, :name)
     table_opts = Keyword.fetch!(opts, :opts)
 
-    if :ets.info(name) === :undefined do
-      :ets.new(name, table_opts)
-    end
+    _table =
+      if :ets.info(name) === :undefined do
+        :ets.new(name, table_opts)
+      end
 
     :ok
   end
