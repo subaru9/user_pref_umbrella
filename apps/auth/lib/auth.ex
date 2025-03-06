@@ -4,7 +4,7 @@ defmodule Auth do
   """
   @type auth_token :: String.t() | nil
   @type user_id :: non_neg_integer
-  @type res :: {:ok, user_id} | {:error, ErrorMessage.t()}
+  @type res :: ErrorMessage.t_res(user_id)
 
   @doc """
   Verify credentials and store current user id in a context
