@@ -17,7 +17,7 @@ config :user_pref,
 
 config :user_pref_web,
   ecto_repos: [UserPref.Repo],
-  generators: [context_app: :user_pref],
+  generators: [context_app: :user_pref, timestamp_type: :utc_datetime_usec],
   env: config_env()
 
 config :bg_jobs,
