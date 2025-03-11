@@ -13,7 +13,7 @@ defmodule UserPref.Chat do
 
   @type t :: %__MODULE__{
           __meta__: Ecto.Schema.Metadata.t(),
-          topic: String.t(),
+          topic: String.t() | nil,
           user_a: User.t() | Ecto.Association.NotLoaded.t(),
           user_a_id: non_neg_integer() | nil,
           user_b_id: non_neg_integer() | nil,
