@@ -1,4 +1,4 @@
-defmodule UserPref.Chat do
+defmodule UserPref.Chats.Chat do
   use Ecto.Schema
 
   import Ecto.Changeset,
@@ -22,8 +22,8 @@ defmodule UserPref.Chat do
           updated_at: DateTime.t() | nil
         }
 
-  @type params :: %{
-          required(:topic) => String.t(),
+  @type create_params :: %{
+          optional(:topic) => String.t(),
           required(:user_a_id) => non_neg_integer(),
           required(:user_b_id) => non_neg_integer()
         }

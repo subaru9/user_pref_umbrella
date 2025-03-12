@@ -1,8 +1,6 @@
 defmodule UserPref do
   @moduledoc """
-  Access layer for schemas.
-
-  Benefits of returning ErrorMessage: uniformity, reusability, extensibility, testability.
+  Access layer for User, Pref, Avatar schemas.
   """
 
   alias EctoShorts.Actions

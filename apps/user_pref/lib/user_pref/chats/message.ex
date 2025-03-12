@@ -1,4 +1,4 @@
-defmodule UserPref.Message do
+defmodule UserPref.Chats.Message do
   use Ecto.Schema
 
   import Ecto.Changeset,
@@ -8,7 +8,8 @@ defmodule UserPref.Message do
       foreign_key_constraint: 2
     ]
 
-  alias UserPref.{Chat, User}
+  alias UserPref.User
+  alias UserPref.Chats.Chat
 
   @type t :: %__MODULE__{
           __meta__: Ecto.Schema.Metadata.t(),
@@ -22,7 +23,7 @@ defmodule UserPref.Message do
           updated_at: DateTime.t() | nil
         }
 
-  @type params :: %{
+  @type create_params :: %{
           required(:body) => String.t(),
           required(:user_id) => non_neg_integer(),
           required(:chat_id) => non_neg_integer()
