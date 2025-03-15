@@ -23,12 +23,6 @@ defmodule UserPref.Chats.Message do
           updated_at: DateTime.t() | nil
         }
 
-  @type create_params :: %{
-          required(:body) => String.t(),
-          required(:user_id) => non_neg_integer(),
-          required(:chat_id) => non_neg_integer()
-        }
-
   @available_fields [:body, :user_id, :chat_id]
   @required_fields [:body, :user_id, :chat_id]
 

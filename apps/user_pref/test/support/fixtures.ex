@@ -8,11 +8,13 @@ defmodule UserPref.Support.Fixtures do
   def user_fixture(attrs \\ %{}) do
     unique_id = System.unique_integer([:positive])
 
+    id = attrs[:id]
     first_name = attrs[:first_name] || "user-#{unique_id}"
     last_name = attrs[:last_name] || "test"
     email = attrs[:email] || "#{first_name}.#{last_name}@example.com"
 
     default_attrs = %{
+      id: id,
       first_name: first_name,
       last_name: last_name,
       email: email,

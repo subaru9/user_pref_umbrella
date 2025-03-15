@@ -4,13 +4,17 @@ defmodule UserPrefWeb.Schema do
   """
   use Absinthe.Schema
 
+  alias UserPref.Chats
   alias UserPrefWeb.Config
   alias UserPrefWeb.Schema
   alias UserPrefWeb.Schema.Middleware
 
+  import_types Schema.Type.Scalar
   import_types Schema.Type.UserPref
+  import_types Schema.Type.Chat
   import_types Schema.Query.UserPref
   import_types Schema.Mutation.UserPref
+  import_types Schema.Mutation.Chat
   import_types Schema.Subscription.UserPref
   import_types Schema.Query.ResolverHitsCounter
 
@@ -22,6 +26,7 @@ defmodule UserPrefWeb.Schema do
   mutation do
     import_fields :user_mutations
     import_fields :pref_mutations
+    import_fields :chat_mutations
   end
 
   subscription do
@@ -40,7 +45,7 @@ defmodule UserPrefWeb.Schema do
   defp apply(middleware, :request_cache, _field, object) do
     case object do
       %{identifier: :query} ->
-        test_ttl = if Config.current_env()  === :test, do: :timer.seconds(1), else: nil
+        test_ttl = if Config.current_env() === :test, do: :timer.seconds(1), else: nil
         opts = if test_ttl, do: [ttl: test_ttl], else: []
         middleware ++ [{RequestCache.Middleware, opts}]
 
@@ -86,7 +91,9 @@ defmodule UserPrefWeb.Schema do
   """
   def context(ctx) do
     loader =
-      Dataloader.add_source(Dataloader.new(), UserPref, UserPref.datasource())
+      Dataloader.new()
+      |> Dataloader.add_source(UserPref, UserPref.datasource())
+      |> Dataloader.add_source(Chats, Chats.datasource())
 
     Map.put(ctx, :loader, loader)
   end

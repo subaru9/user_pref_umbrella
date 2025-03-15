@@ -22,14 +22,8 @@ defmodule UserPref.Chats.Chat do
           updated_at: DateTime.t() | nil
         }
 
-  @type create_params :: %{
-          optional(:topic) => String.t(),
-          required(:user_a_id) => non_neg_integer(),
-          required(:user_b_id) => non_neg_integer()
-        }
-
   @available_fields [:topic, :user_a_id, :user_b_id]
-  @required_fields [:topic, :user_a_id, :user_b_id]
+  @required_fields [:user_a_id, :user_b_id]
 
   schema "chats" do
     field :topic, :string
@@ -45,7 +39,6 @@ defmodule UserPref.Chats.Chat do
     chat
     |> cast(attrs, @available_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint(:topid, name: :chats_topic_unique)
     |> unique_constraint(:user_a_id, name: :chats_user_pair_unique)
     |> foreign_key_constraint(:user_a_id)
     |> foreign_key_constraint(:user_b_id)

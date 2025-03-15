@@ -13,8 +13,6 @@ defmodule UserPref.Repo.Migrations.CreateChats do
     create index(:chats, [:user_a_id])
     create index(:chats, [:user_b_id])
 
-    create unique_index(:chats, [:topic], name: :chats_topic_unique)
-
     create unique_index(
              :chats,
              ["LEAST(user_a_id, user_b_id)", "GREATEST(user_a_id, user_b_id)"],
