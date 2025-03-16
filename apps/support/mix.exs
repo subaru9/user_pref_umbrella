@@ -20,13 +20,15 @@ defmodule Support.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Support.Application, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:confispex, "~> 1.1"},
       {:error_message,
        git: "https://github.com/subaru9/elixir_error_message.git",
        branch: "feat/json-serialisable-functions",

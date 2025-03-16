@@ -7,11 +7,13 @@
 # all use the same configuration file. If you want different
 # configurations or dependencies per app, it is best to
 # move said applications out of the umbrella.
-import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0]
+import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0, config_target: 0]
 
-# Configure Mix tasks and generators
+# Configure  sub-apps, Mix tasks and generators
+config :support,
+  env: config_env(),
+  target: config_target()
 
-# Configure  sub-apps
 config :user_pref,
   ecto_repos: [UserPref.Repo]
 

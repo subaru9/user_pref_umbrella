@@ -2,14 +2,7 @@ import Config, only: [config: 2, config: 3, import_config: 1, config_env: 0, con
 
 alias Confispex, as: Cfx
 
-# Load the runtime environment schema
-Code.compile_file(Path.expand("./runtime_schema.exs", __DIR__))
-
-# Initialize Confispex with the schema
-Cfx.init(%{
-  schema: Config.RuntimeSchema,
-  context: %{env: config_env(), target: config_target()}
-})
+{:ok, _} = Application.ensure_all_started(:support)
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -102,7 +95,6 @@ config :auth, :tokens_runtime, %{
 }
 
 config :giphy_api,
-  #  "aE7655fk9TcdapFbIUShDhj7jxUfoke7"
   api_key: Cfx.get("GIPHY_API_KEY"),
   pools: %{
     default: [

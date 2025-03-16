@@ -13,7 +13,6 @@ defmodule UserPref.Chats do
         }
   @type create_message_params :: %{
           required(:body) => String.t(),
-          required(:user_id) => non_neg_integer(),
           required(:chat_id) => non_neg_integer()
         }
   @type history_params :: %{

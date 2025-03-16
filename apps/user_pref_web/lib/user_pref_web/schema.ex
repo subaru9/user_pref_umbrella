@@ -4,7 +4,6 @@ defmodule UserPrefWeb.Schema do
   """
   use Absinthe.Schema
 
-  alias UserPref.Chats
   alias UserPrefWeb.Config
   alias UserPrefWeb.Schema
   alias UserPrefWeb.Schema.Middleware
@@ -93,7 +92,7 @@ defmodule UserPrefWeb.Schema do
     loader =
       Dataloader.new()
       |> Dataloader.add_source(UserPref, UserPref.datasource())
-      |> Dataloader.add_source(Chats, Chats.datasource())
+      |> Dataloader.add_source(Chats, UserPref.Chats.datasource())
 
     Map.put(ctx, :loader, loader)
   end

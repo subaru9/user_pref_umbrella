@@ -44,10 +44,9 @@ defmodule UserPref.Umbrella.MixProject do
   defp deps do
     [
       {:blitz_credo_checks, "~> 0.1", only: [:test, :dev], runtime: false},
-      {:confispex, "~> 1.1"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.18", only: :test},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test}
     ]
   end
 

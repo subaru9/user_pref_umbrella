@@ -1,4 +1,8 @@
-defmodule Config.RuntimeSchema do
+defmodule Support.RuntimeSchema do
+  @doc """
+  Configuration Schema for runtime env
+  """
+
   import Confispex.Schema, only: [defvariables: 1, validate_variables!: 1]
   alias Confispex.Type
 
@@ -58,7 +62,7 @@ defmodule Config.RuntimeSchema do
       required: [:giphy],
       default_lazy: fn _ -> "1" end
     },
-    "PRIMARY_DB_URL"=> %{
+    "PRIMARY_DB_URL" => %{
       doc: "Primary db url: ecto://USER:PASS@HOST/DATABASE",
       cast: Type.URL,
       groups: [:primary_db],
@@ -66,7 +70,7 @@ defmodule Config.RuntimeSchema do
       aliases: ["DATABASE_URL"],
       context: [env: [:prod]]
     },
-    "PRIMARY_DB_POOL_SIZE"=> %{
+    "PRIMARY_DB_POOL_SIZE" => %{
       doc: "Number of open connnections to primary db",
       cast: Type.Integer,
       groups: [:primary_db],
@@ -82,7 +86,7 @@ defmodule Config.RuntimeSchema do
       default: "false",
       context: [env: [:prod]]
     },
-    "OBAN_DB_URL"=> %{
+    "OBAN_DB_URL" => %{
       doc: "Oban db url: ecto://USER:PASS@HOST/DATABASE",
       cast: Type.URL,
       groups: [:oban_db],
@@ -90,7 +94,7 @@ defmodule Config.RuntimeSchema do
       aliases: ["OBAN_DATABASE_URL"],
       context: [env: [:prod]]
     },
-    "OBAN_DB_POOL_SIZE"=> %{
+    "OBAN_DB_POOL_SIZE" => %{
       doc: "Number of open connnections to oban db",
       cast: Type.Integer,
       groups: [:oban_db],

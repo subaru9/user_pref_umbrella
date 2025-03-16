@@ -26,7 +26,6 @@ defmodule UserPrefWeb.Schema.Type.Chat do
 
   input_object :create_message_input do
     field :body, non_null(:string)
-    field :user_id, non_null(:id)
     field :chat_id, non_null(:id)
   end
 

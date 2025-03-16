@@ -17,7 +17,6 @@ defmodule UserPrefWeb.Resolvers.Chat do
   @type create_message_params :: %{
           input: %{
             required(:body) => String.t(),
-            required(:user_id) => non_neg_integer(),
             required(:chat_id) => non_neg_integer()
           }
         }
@@ -36,14 +35,8 @@ defmodule UserPrefWeb.Resolvers.Chat do
           res :: resolution()
         ) :: ErrorMessage.t_res(Message.t(), Ecto.Changeset.t() | create_message_params())
   def create_message(%{input: params}, %{context: %{current_user_id: current_user_id}}) do
-    if current_user_id === params[:user_id] do
-      Chats.create_message(params)
-    else
-      {:error,
-       ErrorMessage.unauthorized(
-         "[UserPrefWeb.Resolvers.Chat] Current user can't send this message.",
-         params
-       )}
-    end
+    params
+    |> Map.put(:user_id, current_user_id)
+    |> Chats.create_message()
   end
 end
