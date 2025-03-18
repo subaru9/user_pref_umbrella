@@ -1,7 +1,6 @@
 defmodule Auth.Tokens.ProducerTest do
-  use ExUnit.Case
+  use UserPref.DataCase
 
-  alias UserPref.Support.Fixtures
   alias Auth.Tokens.Producer
 
   describe "state transitions" do
@@ -12,7 +11,7 @@ defmodule Auth.Tokens.ProducerTest do
     end
 
     test "updates the cursor after processing demand" do
-      users = [Fixtures.user_fixture(), Fixtures.user_fixture(), Fixtures.user_fixture()]
+      users = [user_fixture(), user_fixture(), user_fixture()]
       id = users |> Enum.map(&(&1.id)) |> Enum.max()
 
       {:ok, pid} = GenStage.start_link(Producer, :ok)

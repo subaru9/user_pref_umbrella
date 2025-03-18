@@ -27,6 +27,9 @@ defmodule UserPref.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import UserPref.DataCase
+
+      import UserPref.Support.Fixtures,
+        only: [user_fixture: 0, user_fixture: 1, chat_fixture: 1]
     end
   end
 

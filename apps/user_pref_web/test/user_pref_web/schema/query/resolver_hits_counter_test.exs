@@ -1,4 +1,5 @@
 defmodule UserPrefWeb.Schema.Query.ResolverHitsCounterTest do
+  alias Mix.Shell.Process
   use UserPrefWeb.ConnCase
 
   @number_of_hits 1
@@ -6,13 +7,10 @@ defmodule UserPrefWeb.Schema.Query.ResolverHitsCounterTest do
   @resolver_hits_doc "query { resolverHits(key: \"users\") }"
 
   describe "@resolverHits with singleton genserver cache" do
-    setup do
-      UserPrefWeb.ResolverHits.Cache.clear()
-      :ok
-    end
-
     @tag timeout: :infinity
-    test "resolver hits counted correctly with singleton genserver cache", %{conn: conn} do
+    test "counted hits correctly", %{conn: conn} do
+      :timer.sleep(1000)
+      UserPrefWeb.ResolverHits.Cache.clear()
       conn = make_queries(conn, @users_doc, @number_of_hits)
       conn = post(conn, "/api", query: @resolver_hits_doc)
       assert json_response(conn, 200)["data"]["resolverHits"] === @number_of_hits

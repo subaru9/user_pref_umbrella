@@ -12,6 +12,7 @@ defmodule UserPref.Chats do
           required(:user_b_id) => non_neg_integer()
         }
   @type create_message_params :: %{
+          required(:user_id) => non_neg_integer(),
           required(:body) => String.t(),
           required(:chat_id) => non_neg_integer()
         }
