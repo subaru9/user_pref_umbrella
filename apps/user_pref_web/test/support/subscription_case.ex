@@ -17,7 +17,7 @@ defmodule UserPrefWeb.SubscriptionCase do
       use Absinthe.Phoenix.SubscriptionTest,
         schema: UserPrefWeb.Schema
 
-      import UserPref.Support.Fixtures, only: [user_fixture: 1]
+      import UserPref.Support.Fixtures, only: [user_fixture: 1, chat_fixture: 1]
 
       setup do
         UserPref.DataCase.setup_sandbox(async: true)

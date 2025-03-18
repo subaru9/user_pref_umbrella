@@ -15,6 +15,7 @@ defmodule UserPrefWeb.Schema do
   import_types Schema.Mutation.UserPref
   import_types Schema.Mutation.Chat
   import_types Schema.Subscription.UserPref
+  import_types Schema.Subscription.Chat
   import_types Schema.Query.ResolverHitsCounter
 
   query do
@@ -30,6 +31,7 @@ defmodule UserPrefWeb.Schema do
 
   subscription do
     import_fields :user_subscriptions
+    import_fields :chat_subscriptions
   end
 
   def middleware(middleware, field, object) do
