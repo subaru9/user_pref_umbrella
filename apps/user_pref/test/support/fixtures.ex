@@ -52,10 +52,12 @@ defmodule UserPref.Support.Fixtures do
 
   @spec message_fixture(map()) :: Message.t()
   def message_fixture(attrs \\ %{}) do
+    id = attrs[:id]
     chat = attrs[:chat] || chat_fixture()
     sender = attrs[:user] || chat.user_a
 
     default_attrs = %{
+      id: id,
       body: attrs[:body] || "Hello, this is a test message from #{sender.id}!",
       chat_id: chat.id,
       user_id: sender.id

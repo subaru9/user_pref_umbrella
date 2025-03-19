@@ -12,14 +12,16 @@ defmodule UserPrefWeb.Schema do
   import_types Schema.Type.UserPref
   import_types Schema.Type.Chat
   import_types Schema.Query.UserPref
+  import_types Schema.Query.Chat
+  import_types Schema.Query.ResolverHitsCounter
   import_types Schema.Mutation.UserPref
   import_types Schema.Mutation.Chat
   import_types Schema.Subscription.UserPref
   import_types Schema.Subscription.Chat
-  import_types Schema.Query.ResolverHitsCounter
 
   query do
     import_fields :user_queries
+    import_fields :chat_queries
     import_fields :resolver_hits_counter_query
   end
 

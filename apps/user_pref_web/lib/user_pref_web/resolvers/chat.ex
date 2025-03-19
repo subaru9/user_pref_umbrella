@@ -2,6 +2,7 @@ defmodule UserPrefWeb.Resolvers.Chat do
   @moduledoc """
   Resolvers for Chat GraphQL operations
   """
+  alias EctoShorts.Actions
   alias UserPref.Chats
   alias UserPref.Chats.{Chat, Message}
 
@@ -38,5 +39,13 @@ defmodule UserPrefWeb.Resolvers.Chat do
     params
     |> Map.put(:user_id, current_user_id)
     |> Chats.create_message()
+  end
+
+  @spec history(
+          params :: %{input: Chats.history_params()},
+          resolution :: resolution()
+        ) :: {:ok, Actions.schemas()}
+  def history(%{input: params}, _resolution) do
+    {:ok, Chats.history(params)}
   end
 end

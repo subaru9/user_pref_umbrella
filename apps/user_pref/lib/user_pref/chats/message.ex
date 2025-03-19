@@ -23,7 +23,9 @@ defmodule UserPref.Chats.Message do
           updated_at: DateTime.t() | nil
         }
 
-  @available_fields [:body, :user_id, :chat_id]
+  @available_fields if UserPref.Config.current_env() === :test,
+                      do: [:id, :body, :user_id, :chat_id],
+                      else: [:body, :user_id, :chat_id]
   @required_fields [:body, :user_id, :chat_id]
 
   schema "messages" do

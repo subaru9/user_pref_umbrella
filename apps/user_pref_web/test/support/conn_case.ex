@@ -29,6 +29,8 @@ defmodule UserPrefWeb.ConnCase do
       import Plug.Conn, only: [get_resp_header: 2, put_req_header: 3, delete_req_header: 2]
       import UserPrefWeb.ConnCase, only: [setup_sandbox: 1]
 
+      import UserPref.Support.Fixtures, only: [user_fixture: 1, chat_fixture: 1, message_fixture: 1]
+
       alias UserPref.Support.Fixtures
     end
   end

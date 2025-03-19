@@ -15,7 +15,8 @@ config :support,
   target: config_target()
 
 config :user_pref,
-  ecto_repos: [UserPref.Repo]
+  ecto_repos: [UserPref.Repo],
+  env: config_env()
 
 config :user_pref_web,
   ecto_repos: [UserPref.Repo],

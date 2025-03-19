@@ -2,6 +2,7 @@ defmodule UserPref.Chats do
   @moduledoc """
   Access layer to chat schemas
   """
+  require Logger
   alias EctoShorts.Actions
   alias UserPref.Chats.{Chat, Message}
 
@@ -12,6 +13,7 @@ defmodule UserPref.Chats do
           required(:user_b_id) => non_neg_integer()
         }
   @type create_message_params :: %{
+          optional(:id) => non_neg_integer(),
           required(:user_id) => non_neg_integer(),
           required(:body) => String.t(),
           required(:chat_id) => non_neg_integer()
@@ -63,7 +65,10 @@ defmodule UserPref.Chats do
     Actions.all(Message, %{last: limit, chat_id: chat_id}, opts)
   end
 
-  def history(_, _), do: []
+  def history(params, _opts) do
+    Logger.debug("[UserPref.Chats] Non supported params: #{inspect(params)}")
+    []
+  end
 
   @spec datasource :: dataloader
   def datasource, do: Dataloader.Ecto.new(UserPref.Repo, query: &query/2)

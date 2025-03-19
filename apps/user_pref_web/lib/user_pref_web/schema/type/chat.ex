@@ -33,4 +33,10 @@ defmodule UserPrefWeb.Schema.Type.Chat do
     field :topic, :string
     field :user_b_id, non_null(:id)
   end
+
+  input_object :chat_history_input do
+    field :chat_id, non_null(:id)
+    field :last, non_null(:id)
+    field :cursor, :id
+  end
 end
